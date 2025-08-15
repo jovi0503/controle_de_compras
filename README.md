@@ -8,9 +8,7 @@
   <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker" alt="Docker Ready">
 </p>
 
-<p align="center">
-  <img src="./dashboard.png" alt="Dashboard do Sistema de Gestão de Compras" width="80%">
-</p>
+
 
 ## 🎯 Sobre o Projeto
 
