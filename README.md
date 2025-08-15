@@ -1,61 +1,94 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Gestão de Compras
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://img.shields.io/badge/PHP-8.3%2B-777BB4?style=for-the-badge&logo=php" alt="PHP 8.3+">
+  <img src="https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel" alt="Laravel 12.x">
+  <img src="https://img.shields.io/badge/Filament-3.x-F59E0B?style=for-the-badge" alt="Filament 3.x">
+  <img src="https://img.shields.io/badge/PostgreSQL-16-336791?style=for-the-badge&logo=postgresql" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker" alt="Docker Ready">
 </p>
 
-## About Laravel
+<p align="center">
+  <img src="./dashboard.png" alt="Dashboard do Sistema de Gestão de Compras" width="80%">
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🎯 Sobre o Projeto
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+O **Sistema de Gestão de Compras** é uma aplicação web robusta, desenvolvida como um *case* de estudo para demonstrar a implementação de um fluxo de trabalho administrativo complexo com tecnologias modernas. O projeto simula um processo de requisição e aprovação de compras, com foco em segurança, integridade de dados e uma experiência de usuário limpa e eficiente.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+A arquitetura foi projetada com base em princípios de modularidade e escalabilidade, tornando esta aplicação uma base sólida que pode ser facilmente customizada para diversas outras soluções de gerenciamento de processos de negócio (BPM).
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## ✨ Features
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Dashboard Gerencial:** Widgets com estatísticas em tempo real e lista de atividades recentes para tomada de decisão rápida.
+- **Controle de Acesso (ACL):** Sistema de permissões baseado em papéis (Admin/Usuário) para proteger rotas e ações críticas.
+- **Gestão de Ciclo de Vida de Usuários:** Sistema de status **Ativo/Inativo**, prevenindo a exclusão de usuários com histórico e bloqueando o acesso de contas desativadas.
+- **Fluxo de Compras:** Criação de solicitações com múltiplos itens, rastreamento de status (`Pendente`, `Aprovada`, `Efetivada`) e associação com solicitantes e aprovadores.
+- **Integridade de Dados Garantida:** Lógica de negócio implementada na aplicação e reforçada por *constraints* de chave estrangeira no banco de dados, com notificações amigáveis para o usuário ao tentar executar ações inválidas (ex: excluir um item em uso).
+- **CRUDS Completos:** Gerenciamento completo de entidades de suporte como Institutos, Coordenações, Categorias e Materiais.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🛠️ Stack Tecnológico
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Backend:** Laravel 12 (PHP 8.3)
+- **Painel Administrativo:** Filament PHP v3
+- **Banco de Dados:** PostgreSQL 16
+- **Ambiente de Desenvolvimento:** Docker com Laravel Sail
+- **Autenticação:** Laravel Fortify (via Filament)
+- **Frontend:** Tailwind CSS, Alpine.js (via Filament)
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 🚀 Instalação e Execução
 
-## Contributing
+O ambiente de desenvolvimento é totalmente containerizado com Docker, garantindo uma configuração rápida e consistente.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1.  **Clone o repositório:**
+    ```bash
+    git clone https://github.com/jovi0503/controle_de_compras/
+    cd nome-do-projeto
+    ```
 
-## Code of Conduct
+2.  **Configure o Ambiente:**
+    ```bash
+    cp .env.example .env
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+3.  **Inicie os Contêineres:**
+    ```bash
+    ./vendor/bin/sail up -d
+    ```
 
-## Security Vulnerabilities
+4.  **Instale as Dependências:**
+    ```bash
+    ./vendor/bin/sail composer install
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+5.  **Configure a Aplicação:**
+    ```bash
+    ./vendor/bin/sail artisan key:generate
+    ./vendor/bin/sail artisan migrate --seed # Executa as migrations e os seeders
+    ./vendor/bin/sail artisan storage:link
+    ```
 
-## License
+6.  **Acesso:**
+    - **URL:** `http://localhost`
+    - **Painel Admin:** `http://localhost/admin`
+    - **Usuário Admin:** `admin@exemplo.com` | `password` *(Sugestão para seu `UserSeeder`)*
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 📜 Licença
+
+Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
+
+---
+
+## 👤 Contato
+
+**João Vitor Santana**
+
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)]([https://www.linkedin.com/in/jovii/])
