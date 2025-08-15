@@ -20,9 +20,9 @@ class CompraResource extends Resource
     protected static ?string $model = Compra::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
-    protected static ?string $modelLabel = 'Gestão de Compra';
-    protected static ?string $pluralModelLabel = 'Gestão de Compras';
-    protected static ?string $navigationLabel = 'Gestão de Compras';
+    protected static ?string $modelLabel = 'Compras';
+    protected static ?string $pluralModelLabel = 'Compras';
+    protected static ?string $navigationLabel = 'Compras';
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form

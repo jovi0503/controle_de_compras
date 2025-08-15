@@ -7,9 +7,11 @@ use App\Filament\Resources\CoordinationResource\RelationManagers;
 use App\Models\Coordination;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification; // Importado
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\QueryException; // Importado
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -17,12 +19,9 @@ class CoordinationResource extends Resource
 {
     protected static ?string $model = Coordination::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $navigationIcon = 'heroicon-o-user-group'; // Ícone alterado para um mais apropriado
     protected static ?string $modelLabel = 'Coordenação';
-
     protected static ?string $pluralModelLabel = 'Coordenações';
-
     protected static ?string $navigationLabel = 'Coordenações';
 
     public static function form(Form $form): Form
@@ -40,7 +39,8 @@ class CoordinationResource extends Resource
                     ->label('Nome da Coordenação')
                     ->maxLength(255),
                 Forms\Components\Toggle::make('e_visivel')
-                    ->label('Visível')
+                    ->label('Ativo')
+                    ->default(true) // Adicionado um valor padrão
                     ->required(),
             ]);
     }
@@ -56,14 +56,14 @@ class CoordinationResource extends Resource
                     ->label('Instituto')
                     ->sortable(),
                 Tables\Columns\IconColumn::make('e_visivel')
-                    ->label('Visível')
+                    ->label('Ativo')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime('d/m/Y') // Formato de data ajustado
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d/m/Y') // Formato de data ajustado
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -72,10 +72,57 @@ class CoordinationResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                // AÇÃO DE EXCLUSÃO CUSTOMIZADA ADICIONADA AQUI
+                Tables\Actions\DeleteAction::make()
+                    ->action(function ($record) {
+                        try {
+                            $record->delete();
+                            Notification::make()
+                                ->title('Coordenação excluída com sucesso!')
+                                ->success()
+                                ->send();
+                        } catch (QueryException $e) {
+                            if ($e->getCode() === '23503') {
+                                Notification::make()
+                                    ->title('Exclusão Falhou!')
+                                    ->body('Esta coordenação não pode ser excluída pois está sendo utilizada em uma ou mais compras.')
+                                    ->danger()
+                                    ->send();
+                            } else {
+                                throw $e;
+                            }
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->action(function ($records) {
+                            $cantDeleteCount = 0;
+                            foreach ($records as $record) {
+                                try {
+                                    $record->delete();
+                                } catch (QueryException $e) {
+                                    if ($e->getCode() === '23503') {
+                                        $cantDeleteCount++;
+                                    } else {
+                                        throw $e;
+                                    }
+                                }
+                            }
+                            if ($cantDeleteCount > 0) {
+                                Notification::make()
+                                    ->title('Exclusão Parcialmente Falhou!')
+                                    ->body("Não foi possível excluir {$cantDeleteCount} coordenação(ões), pois estão em uso.")
+                                    ->danger()
+                                    ->send();
+                            } else {
+                                Notification::make()
+                                    ->title('Coordenações excluídas com sucesso!')
+                                    ->success()
+                                    ->send();
+                            }
+                        }),
                 ]),
             ]);
     }
@@ -94,5 +141,10 @@ class CoordinationResource extends Resource
             'create' => Pages\CreateCoordination::route('/create'),
             'edit' => Pages\EditCoordination::route('/{record}/edit'),
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->is_admin;
     }
 }

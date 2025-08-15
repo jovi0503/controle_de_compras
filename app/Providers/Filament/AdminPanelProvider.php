@@ -2,8 +2,10 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\Login; // Garante que sua página de login customizada está sendo importada
+use App\Filament\Widgets\CompraStatsOverview; // Importa seu widget de estatísticas
+use App\Filament\Widgets\UltimasCompras; // Importa seu widget de últimas compras
 use Filament\Http\Middleware\Authenticate;
-use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
@@ -26,7 +28,8 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            // Registra sua página de login customizada para verificar usuários ativos
+            ->login(Login::class)
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -36,15 +39,16 @@ class AdminPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            // Registra os widgets que aparecerão no dashboard
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                Widgets\AccountWidget::class, // Widget de "Bem-vindo"
+                CompraStatsOverview::class,   // Seus cards de estatísticas
+                UltimasCompras::class,        // Sua tabela de últimas compras
             ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
-                AuthenticateSession::class,
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,

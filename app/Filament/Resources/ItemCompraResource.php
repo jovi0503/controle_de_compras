@@ -88,4 +88,9 @@ class ItemCompraResource extends Resource
     {
         return false;
     }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->is_admin;
+    }
 }
